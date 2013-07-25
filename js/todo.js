@@ -87,11 +87,27 @@ var todo = (function() {
 		ls.update(todos);
 	}
 
+	function clearTodos() {
+		todos = [];
+		refreshTodos();
+	}
+
+	function clearUncheckedTodos() {
+		for(var i = todos.length - 1; i >= 0; i--) {
+			if(todos[i].checked === 0){
+				todos.splice(i, 1);	
+			}
+		}
+		refreshTodos();
+	}
+
 	return {
 		init: init,
 		addTodo: addTodo,
 		removeTodo: removeTodo,
 		checkTodo: checkTodo,
-		setAllTodos: setAllTodos
+		setAllTodos: setAllTodos,
+		clearTodos: clearTodos,
+		clearUncheckedTodos: clearUncheckedTodos
 	};
 }());
