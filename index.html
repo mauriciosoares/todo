@@ -6,10 +6,31 @@
 	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-	<ul id="todo"></ul>
-	<input type="text" id="newTodoInput" />
-	<input type="button" id="addTodoBt" value="Add New Todo" />
+	<div class="app">
+		<ul id="todo"></ul>
+		<div class="actions">
+			<input type="text" id="newTodoInput" class="todo-input" />
+			<input type="button" id="addTodoBt" value="Add New Todo" />
+			<!-- <input type="button" id="clearTodos" value="Clear Todos" />
+			<input type="button" id="stashTodos" value="Stash Todos" /> -->
+		</div>
+	</div>
 
-	<script src="js/main.js"></script>
+	<script src="js/todo.js"></script>
+	<script src="js/ls.js"></script>
+	<script>
+		var addTodoBt = document.getElementById('addTodoBt');
+		addTodoBt.addEventListener('click', todo.addTodo);
+
+		document.querySelector('body').addEventListener('click', function(e) {
+			if(e.target.className === 'delete'){
+				todo.removeTodo(e.target.getAttribute('data-id'));
+			}else if(e.target.className === 'check'){
+				todo.checkTodo(e.target.getAttribute('data-id'));
+			}
+		});
+
+		todo.init();
+	</script>
 </body>
 </html>
