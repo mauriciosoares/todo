@@ -15,7 +15,6 @@ var todo = (function() {
 		todos = storagedTodos;
 	}
 
-
 	// this function refreshes all the li's in the todo UL
 	function refreshTodos() {
 		todoList.innerHTML = '';
@@ -95,7 +94,7 @@ var todo = (function() {
 	function clearUncheckedTodos() {
 		for(var i = todos.length - 1; i >= 0; i--) {
 			if(todos[i].checked === 0){
-				todos.splice(i, 1);	
+				todos.splice(i, 1);
 			}
 		}
 		refreshTodos();
