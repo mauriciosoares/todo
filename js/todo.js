@@ -2,7 +2,9 @@ var todo = (function() {
 	'use strict';
 
 	var todos = [],
-		todoList = document.getElementById('todo');
+		stashTodos = [],
+		todosList = document.getElementById('todos'),
+		stashTodosList = document.getElementById('stashTodos');
 
 	// verify if localstorage has some data, and refresh the todos
 	function init() {
@@ -11,13 +13,20 @@ var todo = (function() {
 	}
 
 	// this function allows the ls class to access the todo's variable
-	function setAllTodos(storagedTodos) {
-		todos = storagedTodos;
+	function setAllTodos(storagedTodos, storagedStashTodos) {
+		if(storagedTodos) {
+			todos = storagedTodos;
+		}
+		
+		if(storagedStashTodos) {
+			stashTodos = storagedStashTodos;
+		}
 	}
 
 	// this function refreshes all the li's in the todo UL
-	function refreshTodos() {
-		todoList.innerHTML = '';
+	function refreshTodos(refreshStash) {
+		var lsStashTodosList = null;
+		todosList.innerHTML = '';
 
 		// for each index of the todos array, it inserts an element into the dom
 		todos.forEach(function(element, index){
@@ -46,11 +55,24 @@ var todo = (function() {
 			}
 
 
-			todoList.appendChild(todo);
+			todosList.appendChild(todo);
 		});
 
+		if(refreshStash || stashTodos.length != 0) {
+			stashTodosList.innerHTML = '';
+
+			stashTodos.forEach(function(element) {
+				var todo = document.createElement('li');
+
+				todo.innerText = element.text;
+
+				stashTodosList.appendChild(todo);
+			});
+			lsStashTodosList = stashTodos;
+		}
+
 		// after the refresh, updates the localstorage accessing the ls class
-		ls.update(todos);
+		ls.update(todos, lsStashTodosList);
 	}
 
 	// inserts a new todo list, with the checked index to 0
@@ -100,6 +122,21 @@ var todo = (function() {
 		refreshTodos();
 	}
 
+	function stashCheckedTodos () {
+		for(var i = todos.length - 1; i >= 0; i--) {
+			if(todos[i].checked === 1){
+				stashTodos.push(todos[i]);
+				todos.splice(i, 1);
+			}
+		}
+		refreshTodos(true);
+	}
+
+	function clearStashTodos() {
+		stashTodos = [];
+		refreshTodos(true);
+	}
+
 	return {
 		init: init,
 		addTodo: addTodo,
@@ -107,6 +144,8 @@ var todo = (function() {
 		checkTodo: checkTodo,
 		setAllTodos: setAllTodos,
 		clearTodos: clearTodos,
-		clearUncheckedTodos: clearUncheckedTodos
+		clearUncheckedTodos: clearUncheckedTodos,
+		stashCheckedTodos: stashCheckedTodos,
+		clearStashTodos: clearStashTodos
 	};
 }());

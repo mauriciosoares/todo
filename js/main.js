@@ -8,6 +8,13 @@ clearCurrentTodos.addEventListener('click', todo.clearTodos);
 var clearUncheckedTodos = document.getElementById('clearUncheckedTodos');
 clearUncheckedTodos.addEventListener('click', todo.clearUncheckedTodos);
 
+var stashCheckedTodos = document.getElementById('stashCheckedTodos');
+stashCheckedTodos.addEventListener('click', todo.stashCheckedTodos);
+
+var clearStashTodos = document.getElementById('clearStashTodos');
+clearStashTodos.addEventListener('click', todo.clearStashTodos);
+
+
 
 
 // adds an event listener to the check and delete
